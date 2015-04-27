@@ -3,7 +3,10 @@ var React = require('react-native');
 var {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+  ActivityIndicatorIOS
 } = React;
 
 var styles = StyleSheet.create({
@@ -51,11 +54,43 @@ var styles = StyleSheet.create({
 });
 
 
-class Main extends React.Component {
+class Main extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      username: '',
+      isLoading: false,
+      error: false
+    };
+  }
+  handleChange(event){
+    this.setState({
+      username: event.nativeEvent.text
+    });
+  }
+  handleSubmit(){
+    //update our indicatorIOS spinner
+    this.setState({
+      isLoading: true
+    });
+      console.log('Submit', this.state.username);
+    //fetch data from github
+    //reroute to the next page, passing that github info in
+  }
   render() {
-    return (
-      <View style = {styles.mainContainer}>
-        <Text> Testing the Router </Text>
+    return(
+      <View style={styles.mainContainer}>
+      <Text style={styles.title}> Search for a Github User </Text>
+      <TextInput
+        style={styles.searchInput}
+        value={this.state.username}
+        onChange={this.handleChange.bind(this)} />
+        <TouchableHighlight
+          style={styles.button}
+          onPress={this.handleSubmit.bind(this)}
+          underlayColor="white">
+          <Text style={styles.buttonText}> SEARCH </Text>
+        </TouchableHighlight>
       </View>
       )
   }
